@@ -43,10 +43,21 @@ def meme_form():
         url = ''
     return render_template('meme-form.html', url=url)
 
+def render_memes_page(order_by):
+    memes = get_db().select('SELECT id, url, caption1, caption2, likes FROM memes ORDER BY ' + order_by + ' DESC;')
+    return render_template('homepage.html', memes=memes)
+
 @app.route('/')
 def index():
-    memes = get_db().select('SELECT id, url, caption1, caption2, likes FROM memes ORDER BY likes DESC')
-    return render_template('homepage.html', memes=memes)
+    # Popular ones (most likes first)
+    # ORDER BY likes DESC
+    return render_memes_page('likes')
+
+@app.route('/fresh')
+def fresh_memes():
+    # Newest ones (newest first)
+    # ORDER BY id DESC
+    return render_memes_page('id')
 
 def chunk(l, n):
     for i in range(0, len(l), n):
