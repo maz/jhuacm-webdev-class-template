@@ -45,7 +45,7 @@ def meme_form():
 
 def render_memes_page(order_by):
     memes = get_db().select('SELECT id, url, caption1, caption2, likes FROM memes ORDER BY ' + order_by + ' DESC;')
-    return render_template('homepage.html', memes=memes)
+    return render_template('homepage.html', memes=memes, order_by=order_by)
 
 @app.route('/')
 def index():
