@@ -35,7 +35,13 @@ def show(id):
 
 @app.route('/meme_form')
 def meme_form():
-    return render_template('meme-form.html')
+    id = request.args.get('based_on', '')
+    if id != '':
+        meme = get_db().select('SELECT url FROM memes WHERE id=?;', [id])[0]
+        url = meme['url']
+    else:
+        url = ''
+    return render_template('meme-form.html', url=url)
 
 @app.route('/')
 def index():
