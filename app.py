@@ -23,6 +23,20 @@ def add_meme():
 
     return redirect(url_for('index'))
 
+@app.route('/comment/<meme_id>', methods=['POST'])
+def add_comment(meme_id):
+    author = request.form['author']
+    message = request.form['message']
+
+    get_db().execute('INSERT INTO comments (author, messsage, meme_id) VALUES (?, ?, ?);', [
+        author,
+        message,
+        meme_id
+    ])
+
+    return redirect(url_for('show', id=meme_id))
+
+
 @app.route('/like_meme/<id>')
 def like_meme(id):
     get_db().execute('UPDATE memes SET likes = likes + 1 WHERE id = ?', [id])
@@ -31,6 +45,7 @@ def like_meme(id):
 @app.route('/meme/<id>')
 def show(id):
     meme = get_db().select('SELECT * FROM memes WHERE id=?;', [int(id)])[0]
+    meme['comments'] = get_db().select('SELECT * FROM comments WHERE meme_id = ?', [int(meme['id'])])
     return render_template('show.html', meme=meme)
 
 @app.route('/meme_form')
