@@ -46,6 +46,7 @@ def like_meme(id):
 def show(id):
     meme = get_db().select('SELECT * FROM memes WHERE id=?;', [int(id)])[0]
     meme['comments'] = get_db().select('SELECT * FROM comments WHERE meme_id = ?', [int(meme['id'])])
+    meme['num_comments'] = len(meme['comments'])
     return render_template('show.html', meme=meme)
 
 @app.route('/meme_form')
@@ -60,6 +61,9 @@ def meme_form():
 
 def render_memes_page(order_by):
     memes = get_db().select('SELECT id, url, caption1, caption2, likes FROM memes ORDER BY ' + order_by + ' DESC;')
+    for meme in memes:
+        num_comments_results = get_db().select('SELECT COUNT(*) AS num FROM comments WHERE meme_id = ?', [int(meme['id'])])
+        meme['num_comments'] = num_comments_results[0]['num']
     return render_template('homepage.html', memes=memes, order_by=order_by)
 
 @app.route('/')
