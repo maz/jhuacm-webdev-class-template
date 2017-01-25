@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Memestagram{% endblock %}
+
+{% block body %}
+    <style>
+        .row {
+            margin-top: 2rem;
+        }
+
+        img {
+            min-width: 100%;
+            max-width: 100%;
+        }
+
+        h3 {
+            margin-top: 2rem;
+        }
+    </style>
+
+    <div class="row">
+        <div class="col-7">
+            {% include 'meme-card.html' %}
+        </div>
+    </div>
+{% endblock %}

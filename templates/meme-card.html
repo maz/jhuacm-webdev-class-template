@@ -1,0 +1,12 @@
+<div class="card">
+    <a href="{{ url_for('show', id=meme['id']) }}">
+        <canvas data-src="{{meme['url']}}"
+             data-top-caption="{{meme['caption1']}}"
+             data-bottom-caption="{{meme['caption2']}}"
+             class="card-img-top meme-render"></canvas>
+    </a>
+    <div class="card-block">
+        <a href="{{ url_for('like_meme', id=meme['id']) }}" class="card-link like-link"><i class="fa fa-heart"></i> <span class="count">{{ meme['likes'] }}</span></a>
+        <a href="{{ url_for('show', id=meme['id']) }}" class="card-link"><i class="fa fa-comment"></i> 0</a>
+    </div>
+</div>

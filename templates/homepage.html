@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Memestagram{% endblock %}
+
+{% block body %}
+    <style>
+        .row {
+            margin-top: 1rem !important;
+        }
+    </style>
+
+    {% if memes == [] %}
+        <p class="text-center">No memes! Why not <a href="{{ url_for('meme_form') }}">make one</a>?
+    {%else%}
+        {% for row_memes in chunk(memes, 3) %}
+            <div class="row">
+                {% for meme in row_memes %}
+                    <div class="col col-4">
+                        {% include 'meme-card.html' %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
